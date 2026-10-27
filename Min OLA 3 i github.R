@@ -361,20 +361,17 @@ mean(julehandel$hoejere)    # andel af år med stigning i julehandel (ca. 64 %)
 
 # DST's forbrugertillidsindikator – vi fjernede den i opgave 1, så den hentes igen her
 # Gennemsnit af juli, august og september hvert år (det kender vi "nu" for 2026)
-# brug dst_meta("FORV1", lang = "da") til at se hvilke values du kan hente ned.
-tillid_q3 <- dst_get_data(
-  table = "FORV1",
-  query = list(INDIKATOR = "*", Tid = "*"), #istedet for at skrive alle spm, lange navne og i tiden, så bruger jeg * til at hente alle variable i indikator og tid
-  lang = "da",
-  parse_dst_tid = FALSE
-) |>
-  filter(grepl("Forbrugertillidsindikatoren", INDIKATOR)) |>   # kun DST's indikator
-  mutate(aar    = as.numeric(substr(TID, 1, 4)),
-         maaned = as.numeric(substr(TID, 6, 7))) |>
-  filter(maaned %in% 7:9) |>                                   # kun juli, august og september altså k3 
-  group_by(aar) |>
-  summarise(tillid_q3 = mean(value))                           # gennemsnit af k3 pr. år igennem min periode
+# ---- Vælg indikator her: dst_spm, di_spm eller bedste_spm (alle fra opgave 1.2) ----
+valgte_spm <- dst_spm   # skift til bedste_spm for at se, hvad min bedste indikator siger om julehandlen
 
+# Tilliden i 3. kvartal (juli-september) hvert år = gennemsnittet af de valgte spørgsmål
+# forv1 er allerede lavet om til kvartaler øverst i scriptet, så vi tager bare K3-rækkerne
+kun_k3 <- grepl("K3", forv1$TID)   # TRUE for alle 3. kvartaler, fx "2026K3"
+tillid_q3 <- data.frame(
+  aar       = as.numeric(substr(forv1$TID[kun_k3], 1, 4)),   # "2026K3" bliver til 2026
+  tillid_q3 = rowMeans(forv1[kun_k3, valgte_spm, drop = FALSE]),   # gennemsnit af de valgte spørgsmål i juli-september
+  row.names = NULL   # nulstil rækkenumrene, så de går 1, 2, 3 ...
+)
 # Sæt tilliden sammen med julehandlen, så hvert år har begge dele
 # inner_join() gør det samme som merge(): sætter tabellerne sammen på året
 model_data <- julehandel |>
