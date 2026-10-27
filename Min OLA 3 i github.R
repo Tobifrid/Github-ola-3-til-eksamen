@@ -595,3 +595,4 @@ figur_2023
 # Gem graferne (valgfrit)
 ggsave("fig_storm_2022.png", figur_2022, width = 9, height = 5.5, dpi = 200)
 ggsave("fig_storm_2023.png", figur_2023, width = 9, height = 5.5, dpi = 200)
+
