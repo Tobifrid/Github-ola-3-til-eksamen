@@ -2,9 +2,9 @@
 # OLA 3 – Opgave 2: Principal Component Analysis
 # =====================================================================
 # Opgave 2 bygger på data og navne fra opgave 1 (forv1, NKN1, forv1ogNKN1,
-# kun_kvt_fra_forv1_og_nkn1, F_koder osv.). source() kører hele opgave1.R først,
-# så alt det findes, før opgave 2 starter. opgave1.R skal ligge i samme mappe.
-source("opgave1.R", encoding = "UTF-8")                                         # kør opgave 1 først (henter data og laver navnene)
+# kun_kvt_fra_forv1_og_nkn1, F_koder osv.). source() kører hele "OLA 3 opgave 1.R" først,
+# så alt det findes, før opgave 2 starter. Filen skal ligge i samme mappe som projektet.
+source("OLA 3 opgave 1.R", encoding = "UTF-8")                                         # kør opgave 1 først (henter data og laver navnene)
 
 # =====================================================================
 # Opgave 2.1: PCA regression
