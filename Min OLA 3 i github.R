@@ -401,7 +401,7 @@ for (i in 1:nrow(model_data)) {                     # loop: år for år
   traening      <- model_data[-i, ]                 # alle år undtagen år nr. i
   model         <- glm(hoejere ~ tillid_q3, data = traening, family = binomial)
   sandsynlighed <- predict(model, newdata = model_data[i, ], type = "response")
-  gaet[i]       <- sandsynlighed > 0.5              # TRUE = modellen gætter "højere"
+  gaet[i]       <- sandsynlighed > 0.5              # skal være højere end 50% odds 
 }
 
 mean(gaet == model_data$hoejere)                    # andel rigtige gæt (ca. 60 %)
@@ -411,6 +411,7 @@ model_data |> filter(gaet != hoejere)               # de år, modellen gætter f
 
 # Test på julehandlen 2025: modellen laves kun på 2001-2024, og vi gætter 2025
 model_til_2024 <- glm(hoejere ~ tillid_q3, data = model_data |> filter(aar <= 2024), family = binomial)
+summary(model_til_2024)
 predict(model_til_2024, newdata = model_data |> filter(aar == 2025), type = "response")   # ca. 25 %
 model_data |> filter(aar == 2025)                   # faktisk: julehandlen steg
 
